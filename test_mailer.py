@@ -51,6 +51,18 @@ class TestEmail(unittest.TestCase):
         self.assertEqual(response.status_code, 500)
         self.assertEqual(response.json(), {"detail": "SMTP credentials are not set"})
 
+    @patch.dict('os.environ', {'SMTP_EMAIL': 'test_email', 'SMTP_PASSWORD': 'test_password'})
+    def test_invalid_email_format(self):
+        response = client.post(
+            "/send_email/",
+            json={
+                "to": "invalid-email-format",
+                "subject": "Test Subject",
+                "message": "Test Message"
+            }
+        )
+        self.assertEqual(response.status_code, 422)
+        self.assertIn("value is not a valid email address", response.json()['detail'][0]['msg'])
 
 if __name__ == '__main__':
     unittest.main()
