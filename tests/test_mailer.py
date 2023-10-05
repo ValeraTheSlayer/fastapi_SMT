@@ -1,14 +1,14 @@
 from fastapi.testclient import TestClient
 from unittest.mock import patch
 import unittest
-from main import app
+from app.main import app
 
 client = TestClient(app)
 
 
 class TestEmail(unittest.TestCase):
 
-    @patch('main.send_email', return_value=True)
+    @patch('app.main.send_email', return_value=True)
     @patch.dict('os.environ', {'SMTP_EMAIL': 'test_email', 'SMTP_PASSWORD': 'test_password'})
     def test_send_email_successful(self, mock_send_email):
         response = client.post(
@@ -23,7 +23,7 @@ class TestEmail(unittest.TestCase):
         self.assertEqual(response.json(), {"status": "email sent"})
         mock_send_email.assert_called_once()
 
-    @patch('main.send_email', return_value=False)
+    @patch('app.main.send_email', return_value=False)
     @patch.dict('os.environ', {'SMTP_EMAIL': 'test_email', 'SMTP_PASSWORD': 'test_password'})
     def test_send_email_failure(self, mock_send_email):
         response = client.post(
