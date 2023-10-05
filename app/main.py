@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException
-from models import EmailSchema
-from mailer import send_email
+from app.models import EmailSchema
+from app.mailer import send_email
 import os
 
 app = FastAPI()
