@@ -5,6 +5,14 @@ import logging
 import os
 
 def send_email(to, subject, message):
+    """
+    Отправляет электронное письмо.
+
+    :param to: Получатель письма
+    :param subject: Тема письма
+    :param message: Текст письма
+    :return: True, если письмо успешно отправлено. В противном случае, False.
+    """
     try:
         msg = MIMEMultipart()
         msg['From'] = os.environ.get('SMTP_EMAIL')
